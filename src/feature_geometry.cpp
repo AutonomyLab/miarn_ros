@@ -1,6 +1,5 @@
 #include "miarn/feature_geometry.h"
 
-
 float LaserFeatureX::Average(float a[],int size_a) {
     float sum = 0;
     for (int i = 0;i < size_a;i++) {
@@ -187,7 +186,7 @@ void LaserFeatureX::Segmentation() {
     {
         if (this->ranges[i] >= this->max_laser_range)
         {
-            if (mask==1) {
+            if (mask==1 && segments.size() > 0) {
                 this->segments[segments.size()].end = i-1;
             };
             mask=0;
@@ -197,7 +196,7 @@ void LaserFeatureX::Segmentation() {
             segment_tmp.begin = i;
             mask=1;
         };
-        if (std::fabs(this->ranges[i]-this->ranges[i+1]) > this->segmentation_threshold) { // check if should close segment
+        if (std::fabs(this->ranges[i]-this->ranges[i+1]) >= this->segmentation_threshold) { // check if should close segment
             segment_tmp.end = i;
             this->segments.push_back(segment_tmp);
             segment_tmp.end = this->ranges.size()-1;
